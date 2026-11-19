@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import oficina from "../assets/proyectos/oficina.webp";
+import planos from "../assets/proyectos/planos.webp";
+import { communes, site } from "../data/site";
+---
+
+<section id="nosotros" class="section bg-sand">
+  <div class="container-site grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
+    <div class="relative mx-auto grid w-full max-w-[30rem] grid-cols-[1.15fr_1fr] gap-4 lg:mx-0" data-reveal>
+      <Image
+        src={oficina}
+        alt="Sala de reuniones de la oficina de GAUZA con planos sobre la mesa"
+        widths={[327]}
+        sizes="(min-width: 1024px) 17rem, 52vw"
+        class="aspect-[3/5] w-full rounded-[1.5rem] object-cover shadow-soft"
+      />
+      <div class="flex flex-col gap-4 pt-14">
+        <Image
+          src={planos}
+          alt="Planos impresos con el timbre de GAUZA, listos para ingresar a la DOM"
+          widths={[393]}
+          sizes="(min-width: 1024px) 14rem, 44vw"
+          class="aspect-[4/5] w-full rounded-[1.5rem] object-cover shadow-soft"
+        />
+        <div class="rounded-[1.25rem] bg-ink-950 p-5 text-white">
+          <p class="font-display text-4xl leading-none font-bold">{communes.length}</p>
+          <p class="mt-1 text-xs text-ink-300">comunas de la región que atendemos</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div data-reveal>
+        <p class="eyebrow">Nosotros</p>
+        <h2 class="section-title mt-4">Una oficina técnica que te explica cada paso</h2>
+        <p class="section-lead">
+          Te recibimos en el centro de Villa Alemana para revisar tu caso, contarte qué documentos pide la Dirección de
+          Obras y cómo se arma tu carpeta. Estudiamos la normativa de cada comuna para que tu proyecto, sea habitacional,
+          comercial o industrial, avance sin sorpresas.
+        </p>
+      </div>
+
+      <ul class="mt-8 grid gap-3 sm:grid-cols-2" data-reveal>
+        <li>
+          <a href={site.mapsUrl} target="_blank" rel="noopener" class="contact-item">
+            <Icon name="pin" class="size-5 shrink-0 text-wine-700" />
+            <span><strong>{site.address.street}</strong><br />{site.address.city}</span>
+          </a>
+        </li>
+        <li>
+          <a href={`tel:${site.phone}`} class="contact-item">
+            <Icon name="phone" class="size-5 shrink-0 text-wine-700" />
+            <span><strong>Oficina</strong><br />{site.phoneLabel}</span>
+          </a>
+        </li>
+        <li>
+          <a href={site.instagram} target="_blank" rel="noopener" class="contact-item">
+            <Icon name="instagram" class="size-5 shrink-0 text-wine-700" />
+            <span><strong>Instagram</strong><br />@gauza_arquitectura</span>
+          </a>
+        </li>
+        <li class="sm:col-span-2">
+          <a href={`mailto:${site.email}`} class="contact-item">
+            <Icon name="mail" class="size-5 shrink-0 text-wine-700" />
+            <span class="min-w-0"><strong>Correo</strong><br /><span>{site.email}</span></span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="mt-10" data-reveal>
+        <p class="text-xs font-semibold tracking-[0.16em] text-ink-500 uppercase">Dónde trabajamos</p>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {communes.map((c) => <li class="chip">{c}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    height: 100%;
+    min-height: 3.5rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    background: #fff;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--color-ink-500);
+    transition: border-color 0.3s, transform 0.35s var(--ease-out-soft), box-shadow 0.35s;
+  }
+  .contact-item strong {
+    color: var(--color-ink-950);
+    font-weight: 600;
+  }
+  .contact-item:hover {
+    border-color: var(--color-wine-100);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft);
+  }
+  .chip {
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.8125rem;
+    color: var(--color-ink-700);
+  }
+</style>

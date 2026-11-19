@@ -1,0 +1,133 @@
+---
+import { Image } from "astro:assets";
+import placilla from "../assets/proyectos/placilla.webp";
+import rauten from "../assets/proyectos/rauten-obra.webp";
+import maturana from "../assets/proyectos/maturana-obra.webp";
+import palmas from "../assets/proyectos/las-palmas-obra.webp";
+import Icon from "./Icon.astro";
+import Quote from "./Quote.astro";
+import { site } from "../data/site";
+
+const thumbs = [
+  { src: rauten, alt: "Vivienda Rautén" },
+  { src: maturana, alt: "Vivienda Maturana" },
+  { src: palmas, alt: "Galería Las Palmas" },
+];
+---
+
+<section id="contenido" class="relative overflow-hidden pt-28 pb-4 sm:pt-36 lg:pb-8">
+  <!-- Triángulo del logo como trazo decorativo (reemplaza la estrella de la referencia) -->
+  <svg
+    class="hero-triangle pointer-events-none absolute -top-10 left-[-6rem] w-[26rem] text-wine-700/10 sm:left-[-2rem]"
+    viewBox="0 0 100 90"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0.6"
+    aria-hidden="true"
+  >
+    <path d="M50 2 98 88H2z" /><path d="M50 18 84 80H16z" />
+  </svg>
+
+  <div class="container-site relative grid items-center gap-12 md:grid-cols-[1.1fr_1fr] md:gap-8 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
+    <div class="hero-in">
+      <p class="eyebrow">Oficina técnica · Región de Valparaíso</p>
+      <h1 class="mt-5 text-[3.1rem] leading-[0.9] sm:text-7xl md:text-[3.9rem] lg:text-[5.25rem]">
+        Tu proyecto, del plano a la <span class="text-wine-700">recepción final</span>
+      </h1>
+      <p class="mt-6 max-w-[46ch] text-base leading-relaxed text-ink-500 sm:text-lg">
+        Diseñamos, preparamos los planos y tramitamos tu permiso ante la Dirección de Obras. Construir,
+        ampliar o regularizar, con todo en regla.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <a href="#cotizar" class="btn btn-primary">
+          Cotizar mi proyecto <Icon name="arrow" class="arrow size-4" />
+        </a>
+        <a href="#proyectos" class="btn btn-ghost">Ver proyectos</a>
+      </div>
+
+      <div class="mt-10 flex items-center gap-4">
+        <ul class="flex -space-x-3" aria-hidden="true">
+          {
+            thumbs.map((t) => (
+              <li>
+                <Image src={t.src} alt="" width={48} height={48} densities={[1, 2]} class="size-12 rounded-full border-2 border-paper object-cover" />
+              </li>
+            ))
+          }
+          <li class="grid size-12 place-content-center rounded-full border-2 border-paper bg-wine-700 text-white">
+            <Icon name="instagram" class="size-5" />
+          </li>
+        </ul>
+        <p class="text-sm leading-snug text-ink-500">
+          <strong class="block font-semibold text-ink-900">{site.instagramFollowers} personas</strong>
+          siguen nuestras obras en Instagram
+        </p>
+      </div>
+    </div>
+
+    <div class="hero-visual relative mx-auto w-full max-w-[34rem] md:mr-0">
+      <div class="absolute -right-4 -bottom-4 left-10 top-10 rounded-[2rem] bg-wine-700/90" aria-hidden="true"></div>
+      <Image
+        src={placilla}
+        alt="Render del Proyecto Placilla, vivienda de dos pisos en Curauma, Valparaíso"
+        widths={[400, 546]}
+        sizes="(min-width: 1024px) 34rem, 92vw"
+        class="relative aspect-[4/4.1] w-full rounded-[2rem] object-cover shadow-lift"
+        loading="eager"
+        fetchpriority="high"
+      />
+      <div class="float-card absolute -bottom-6 left-4 flex items-center gap-3 rounded-2xl bg-white p-3 pr-5 shadow-lift sm:-left-8">
+        <span class="grid size-10 place-content-center rounded-xl bg-wine-50 text-wine-700"><Icon name="sello" /></span>
+        <span class="text-sm leading-tight">
+          <strong class="block font-semibold text-ink-950">Proyecto Placilla</strong>
+          <span class="text-ink-500">Aprobado por la DOM de Valparaíso</span>
+        </span>
+      </div>
+      <a
+        href={`tel:${site.phone}`}
+        class="float-card float-card--late absolute -top-5 right-3 hidden items-center gap-3 rounded-2xl bg-white/95 p-3 pr-5 shadow-lift backdrop-blur transition-transform duration-300 hover:-translate-y-1 sm:flex"
+      >
+        <span class="grid size-10 place-content-center rounded-xl bg-ink-950 text-white"><Icon name="phone" /></span>
+        <span class="text-sm leading-tight">
+          <span class="block text-ink-500">¿Prefieres llamar?</span>
+          <strong class="font-semibold text-ink-950">{site.phoneLabel}</strong>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <div class="container-site relative mt-16 lg:mt-20">
+    <Quote />
+  </div>
+</section>
+
+<style>
+  .hero-visual {
+    animation: var(--animate-rise);
+    animation-delay: 0.15s;
+  }
+  .float-card {
+    animation: float-in 0.8s var(--ease-out-soft) 0.55s backwards;
+  }
+  .float-card--late {
+    animation-delay: 0.75s;
+  }
+  @keyframes float-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .hero-triangle {
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    to {
+      transform: rotate(6deg) translateY(12px);
+    }
+  }
+</style>

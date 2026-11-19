@@ -1,0 +1,159 @@
+---
+/**
+ * Comparador antes/después. La imagen «antes» (render) se recorta sobre la «después» (obra)
+ * según --pos. Se controla con un input range nativo: funciona con mouse, toque y teclado.
+ */
+import { Image } from "astro:assets";
+import type { Project } from "../data/content";
+
+interface Props {
+  project: Project;
+  eager?: boolean;
+}
+const { project, eager = false } = Astro.props;
+const { before, after, name } = project;
+const loading = eager ? "eager" : "lazy";
+---
+
+<div class="ba relative overflow-hidden rounded-[1.5rem] bg-ink-900" data-ba>
+  <Image src={after.src} alt={after.alt} widths={[546]} sizes="(min-width: 1024px) 46rem, 100vw" class="ba-img" loading={loading} />
+  <div class="ba-before" aria-hidden="false">
+    <Image src={before.src} alt={before.alt} widths={[546]} sizes="(min-width: 1024px) 46rem, 100vw" class="ba-img" loading={loading} />
+  </div>
+
+  <span class="ba-tag left-4">{before.label}</span>
+  <span class="ba-tag right-4">{after.label}</span>
+
+  <span class="ba-handle" aria-hidden="true">
+    <span class="ba-knob">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m9 7-5 5 5 5M15 7l5 5-5 5"></path>
+      </svg>
+    </span>
+  </span>
+
+  <input
+    class="ba-range"
+    type="range"
+    min="0"
+    max="100"
+    value="50"
+    step="1"
+    aria-label={`Comparar ${before.label.toLowerCase()} y ${after.label.toLowerCase()} de ${name}`}
+    data-ba-range
+  />
+</div>
+
+<style>
+  @property --pos {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 50%;
+  }
+  .ba {
+    --pos: 50%;
+    aspect-ratio: 546 / 226;
+    isolation: isolate;
+    touch-action: pan-y;
+  }
+  .ba :global(.ba-img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .ba-before {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+  }
+  .ba-tag {
+    position: absolute;
+    top: 1rem;
+    z-index: 2;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: rgb(18 18 20 / 0.62);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    z-index: 2;
+    width: 2px;
+    margin-left: -1px;
+    background: #fff;
+    box-shadow: 0 0 12px rgb(0 0 0 / 0.35);
+    pointer-events: none;
+  }
+  .ba-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--color-wine-700);
+    box-shadow: var(--shadow-lift);
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s var(--ease-out-soft), background-color 0.3s, color 0.3s;
+  }
+  .ba-knob svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .ba:hover .ba-knob,
+  .ba:has(.ba-range:focus-visible) .ba-knob {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: var(--color-wine-700);
+    color: #fff;
+  }
+  .ba:has(.ba-range:focus-visible) {
+    outline: 2px solid var(--color-wine-700);
+    outline-offset: 4px;
+  }
+  /* El input cubre toda la imagen: se puede arrastrar desde cualquier punto */
+  .ba-range {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    appearance: none;
+  }
+  .ba-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 3rem;
+    height: 100vh;
+  }
+  .ba-range::-moz-range-thumb {
+    width: 3rem;
+    height: 100%;
+    border: 0;
+  }
+  /* Pista de uso: una sola vez, cuando el comparador aparece en pantalla */
+  .ba.is-hinting {
+    animation: ba-hint 1.6s var(--ease-out-soft);
+  }
+  @keyframes ba-hint {
+    0% { --pos: 50%; }
+    35% { --pos: 32%; }
+    70% { --pos: 64%; }
+    100% { --pos: 50%; }
+  }
+</style>

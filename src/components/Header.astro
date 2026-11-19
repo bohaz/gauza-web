@@ -1,0 +1,189 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.webp";
+import { nav, wa } from "../data/site";
+---
+
+<header
+  data-header
+  class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,box-shadow] duration-300 data-[scrolled]:border-line data-[scrolled]:bg-paper/90 data-[scrolled]:shadow-[0_8px_24px_-18px_rgb(18_18_20/0.4)] data-[scrolled]:backdrop-blur-md"
+>
+  <nav aria-label="Principal" class="container-site relative flex h-[4.5rem] items-center justify-between gap-6" data-nav>
+    <a href="/" class="flex items-center gap-3" aria-label="GAUZA, ir al inicio">
+      <Image src={logo} alt="" width={44} height={44} densities={[1, 2]} class="size-11 rounded-full" loading="eager" />
+      <span class="leading-none">
+        <span class="block font-display text-2xl font-bold tracking-wide text-ink-950">GAUZA</span>
+        <span class="mt-0.5 block text-[0.6rem] font-medium tracking-[0.1em] whitespace-nowrap text-ink-500 uppercase sm:text-[0.65rem] sm:tracking-[0.14em]">Arquitectura y Construcción</span>
+      </span>
+    </a>
+
+    <ul
+      id="menu"
+      data-menu
+      class="menu-panel flex items-center gap-8 text-sm font-medium text-ink-700"
+    >
+      {
+        nav.map((item) => (
+          <li>
+            <a href={item.href} class="nav-link">{item.label}</a>
+          </li>
+        ))
+      }
+      <li class="menu-cta">
+        <a class="btn btn-primary w-full" href={wa("Hola GAUZA, quiero cotizar un proyecto.")} target="_blank" rel="noopener">
+          Cotizar por WhatsApp
+        </a>
+      </li>
+    </ul>
+
+    <a class="btn btn-primary desktop-cta hidden !min-h-11 lg:inline-flex" href="#cotizar">Cotizar proyecto</a>
+
+    <button
+      type="button"
+      class="menu-btn"
+      aria-expanded="false"
+      aria-controls="menu"
+      aria-label="Abrir menú"
+      data-menu-btn
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+</header>
+
+<style>
+  .nav-link {
+    position: relative;
+    padding-block: 0.5rem;
+    transition: color 0.2s;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.15rem;
+    height: 2px;
+    background: var(--color-wine-700);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--ease-out-soft);
+  }
+  .nav-link:hover {
+    color: var(--color-ink-950);
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .menu-cta,
+  .menu-btn {
+    display: none;
+  }
+
+  /* ---------- Menú hamburguesa (menos de 1024 px) ----------
+     El panel se despliega bajo el encabezado, que es fijo: abrir o cerrar no
+     cambia la altura del documento ni bloquea el scroll del body, así que la
+     página no salta. El botón es type="button" y no navega. */
+  @media (max-width: 1023.98px) {
+    /* Sin JavaScript no hay botón: el menú se oculta y quedan las secciones y el botón flotante. */
+    :global(html.no-js) .menu-panel {
+      display: none;
+    }
+    :global(html.js) .menu-btn {
+      display: inline-grid;
+      place-content: center;
+      gap: 5px;
+      width: 2.75rem;
+      height: 2.75rem;
+      margin-right: -0.5rem;
+      border-radius: 999px;
+      transition: background-color 0.2s;
+    }
+    .menu-btn:hover {
+      background: var(--color-sand);
+    }
+    .menu-btn span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--color-ink-950);
+      transition: transform 0.35s var(--ease-out-soft), opacity 0.2s;
+    }
+    .menu-btn[aria-expanded="true"] span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .menu-btn[aria-expanded="true"] span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-btn[aria-expanded="true"] span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .menu-panel {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      max-height: calc(100dvh - 4.5rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      margin-inline: 0.75rem;
+      padding: 0.5rem 1.25rem 1.25rem;
+      border: 1px solid var(--color-line);
+      border-radius: 1.25rem;
+      background: #fff;
+      box-shadow: var(--shadow-lift);
+      font-size: 1.0625rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px) scale(0.98);
+      transform-origin: top center;
+      transition:
+        opacity 0.25s var(--ease-out-soft),
+        transform 0.35s var(--ease-out-soft),
+        visibility 0s linear 0.35s;
+    }
+    [data-nav].is-open .menu-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition:
+        opacity 0.25s var(--ease-out-soft),
+        transform 0.35s var(--ease-out-soft),
+        visibility 0s;
+    }
+    .menu-panel li {
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: opacity 0.3s, transform 0.4s var(--ease-out-soft);
+    }
+    [data-nav].is-open .menu-panel li {
+      opacity: 1;
+      transform: none;
+    }
+    [data-nav].is-open .menu-panel li:nth-child(2) { transition-delay: 0.03s; }
+    [data-nav].is-open .menu-panel li:nth-child(3) { transition-delay: 0.06s; }
+    [data-nav].is-open .menu-panel li:nth-child(4) { transition-delay: 0.09s; }
+    [data-nav].is-open .menu-panel li:nth-child(5) { transition-delay: 0.12s; }
+    [data-nav].is-open .menu-panel li:nth-child(6) { transition-delay: 0.15s; }
+    .menu-panel .nav-link {
+      display: flex;
+      align-items: center;
+      min-height: 3.25rem;
+      border-bottom: 1px solid var(--color-line);
+      color: var(--color-ink-900);
+    }
+    .menu-panel .nav-link::after {
+      display: none;
+    }
+    .menu-cta {
+      display: block;
+      margin-top: 1rem;
+    }
+  }
+</style>
