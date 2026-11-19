@@ -16,6 +16,10 @@ npm run check     # tests + build (lo mismo que corre en cada pull request)
 
 Requiere Node 22.18 o superior (los tests se ejecutan en TypeScript sin compilar).
 
+## Dominio y vista previa al compartir
+
+`astro.config.mjs` define el dominio público: usa `SITE_URL` si existe; si no, el dominio de producción de Vercel (`gauza-web.vercel.app`). Así la imagen de `public/og.jpg` siempre carga al compartir el enlace por WhatsApp, aunque gauza.cl todavía no esté conectado.
+
 ## Estructura
 
 ```
@@ -61,7 +65,7 @@ vercel.json             headers de seguridad (CSP) y caché
 - [ ] Imágenes en buena resolución: las actuales son recortes de Instagram (546 px) y sirven solo para la propuesta.
 - [ ] Enlace de Facebook («GAUZA Arquitectura y Construcción») para el pie y el JSON-LD.
 - [ ] Respuestas de las preguntas frecuentes y datos de cada proyecto.
-- [ ] Dominio gauza.cl apuntando a Vercel; luego enviar el sitemap en Google Search Console.
+- [ ] Dominio gauza.cl apuntando a Vercel y la variable `SITE_URL=https://gauza.cl` en el proyecto (canónica, Open Graph y JSON-LD); luego enviar el sitemap en Google Search Console.
 
 ## Estándar de calidad
 

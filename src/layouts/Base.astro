@@ -11,20 +11,24 @@ interface Props {
   description?: string;
 }
 const { title = site.title, description = site.description } = Astro.props;
-const canonical = new URL(Astro.url.pathname === "/" ? "/" : Astro.url.pathname, site.url).href;
-const ogImage = new URL("/og.jpg", site.url).href;
+// Dominio público según astro.config.mjs (SITE_URL o el de Vercel), para que la imagen al compartir siempre cargue.
+const origin = (Astro.site ?? new URL(site.url)).origin;
+// Con build.format "file" la portada se genera como /index.html; la URL pública es /.
+const path = Astro.url.pathname.replace(/(index)?\.html$/, "").replace(/\/$/, "") || "/";
+const canonical = new URL(path, origin).href;
+const ogImage = new URL("/og.jpg", origin).href;
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "ProfessionalService",
-      "@id": `${site.url}/#negocio`,
+      "@id": `${origin}/#negocio`,
       name: site.legalName,
       description,
-      url: site.url,
+      url: origin,
       image: ogImage,
-      logo: new URL("/favicon.png", site.url).href,
+      logo: new URL("/favicon.png", origin).href,
       telephone: site.phone,
       email: site.email,
       address: {
@@ -50,7 +54,7 @@ const jsonLd = {
       name: title,
       description,
       inLanguage: "es-CL",
-      about: { "@id": `${site.url}/#negocio` },
+      about: { "@id": `${origin}/#negocio` },
     },
     {
       "@type": "FAQPage",
@@ -83,8 +87,10 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="GAUZA Arquitectura y Construcción: tu proyecto, del plano a la recepción final" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

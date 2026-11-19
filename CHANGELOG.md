@@ -1,5 +1,9 @@
 # Cambios
 
+## 0.1.1 — 2026-11-19
+### Corregido
+- La imagen al compartir el enlace (Open Graph) y la URL canónica usan el dominio donde está publicado el sitio, no gauza.cl mientras ese dominio no esté conectado.
+
 ## 0.1.0 — 2026-11-19
 ### Agregado
 - Portada completa en Astro + Tailwind, adaptada de la referencia Archee v2 a la identidad de GAUZA (burdeos del logo, títulos condensados, triángulo como recurso gráfico).
