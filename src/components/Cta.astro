@@ -1,0 +1,29 @@
+---
+import Icon from "./Icon.astro";
+import { site, wa } from "../data/site";
+---
+
+<!-- Llamada final -->
+<section class="pb-20 sm:pb-28">
+  <div class="container-site">
+    <div class="cta relative overflow-hidden rounded-[2rem] bg-wine-700 px-6 py-14 text-white sm:px-14 sm:py-20" data-reveal>
+      <svg class="pointer-events-none absolute -top-16 -right-10 w-[22rem] text-white/10" viewBox="0 0 100 90" fill="none" stroke="currentColor" stroke-width="0.7" aria-hidden="true">
+        <path d="M50 2 98 88H2z" /><path d="M50 18 84 80H16z" />
+      </svg>
+      <div class="relative max-w-2xl">
+        <h2 class="text-4xl leading-[0.95] !text-white sm:text-6xl">¿Tienes un proyecto en mente?</h2>
+        <p class="mt-5 max-w-[48ch] text-white/80 sm:text-lg">
+          Cuéntanos qué quieres construir, ampliar o regularizar. Te decimos los pasos y el valor antes de empezar.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="btn btn-light" href={wa("Hola GAUZA, tengo un proyecto en mente y quiero cotizar.")} target="_blank" rel="noopener">
+            <Icon name="whatsapp" class="size-5" /> Escribir por WhatsApp
+          </a>
+          <a class="btn border border-white/30 text-white hover:border-white hover:bg-white/10" href={`tel:${site.phone}`}>
+            <Icon name="phone" class="size-5" /> Llamar a la oficina
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

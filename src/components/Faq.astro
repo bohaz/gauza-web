@@ -1,0 +1,70 @@
+---
+import Icon from "./Icon.astro";
+import { faqs } from "../data/content";
+import { wa } from "../data/site";
+---
+
+<section id="preguntas" class="section">
+  <div class="container-site grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+    <div data-reveal>
+      <p class="eyebrow">Preguntas frecuentes</p>
+      <h2 class="section-title mt-4">Lo que más nos preguntan</h2>
+      <p class="section-lead">¿Tu caso es distinto? Cuéntanoslo por WhatsApp y lo revisamos contigo.</p>
+      <a class="btn btn-ghost mt-8" href={wa("Hola GAUZA, tengo una consulta sobre mi proyecto.")} target="_blank" rel="noopener">
+        <Icon name="whatsapp" class="size-5 text-wine-700" /> Hacer una consulta
+      </a>
+    </div>
+
+    <div class="faq border-t border-line" data-reveal>
+      {
+        faqs.map((f) => (
+          <details class="border-b border-line" name="faq">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-left text-base font-semibold text-ink-950 sm:text-lg">
+              {f.q}
+              <span class="faq-icon grid size-9 shrink-0 place-content-center rounded-full border border-line text-wine-700">
+                <Icon name="plus" class="size-4" strokeWidth={2} />
+              </span>
+            </summary>
+            <div class="faq-body">
+              <p class="max-w-[62ch] pb-6 leading-relaxed text-ink-500">{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-icon {
+    transition: transform 0.35s var(--ease-out-soft), background-color 0.3s, color 0.3s;
+  }
+  summary:hover .faq-icon {
+    background: var(--color-wine-50);
+  }
+  details[open] .faq-icon {
+    transform: rotate(45deg);
+    background: var(--color-wine-700);
+    color: #fff;
+    border-color: var(--color-wine-700);
+  }
+  /* Apertura animada donde el navegador lo permite (::details-content + interpolate-size) */
+  @supports selector(::details-content) {
+    details {
+      interpolate-size: allow-keywords;
+    }
+    details::details-content {
+      height: 0;
+      overflow: clip;
+      transition:
+        height 0.4s var(--ease-out-soft),
+        content-visibility 0.4s allow-discrete;
+    }
+    details[open]::details-content {
+      height: auto;
+    }
+  }
+</style>
