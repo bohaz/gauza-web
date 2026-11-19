@@ -1,0 +1,139 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/logo.webp";
+import Icon from "./Icon.astro";
+import { nav, site, wa } from "../data/site";
+import { services } from "../data/content";
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-ink-950 pt-16 pb-8 text-ink-300">
+  <div class="container-site">
+    <div class="grid gap-10 border-b border-white/10 pb-12 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+      <div>
+        <a href="/" class="flex items-center gap-3" aria-label="GAUZA, ir al inicio">
+          <Image src={logo} alt="" width={48} height={48} densities={[1, 2]} class="size-12 rounded-full" />
+          <span class="font-display text-2xl font-bold tracking-wide text-white">GAUZA</span>
+        </a>
+        <p class="mt-4 max-w-[30ch] text-sm leading-relaxed">
+          Arquitectura, planos y tramitación municipal en la Región de Valparaíso.
+        </p>
+        <ul class="mt-6 flex gap-2" aria-label="Redes y contacto">
+          <li>
+            <a class="social" href={wa()} target="_blank" rel="noopener" aria-label="WhatsApp de GAUZA"><Icon name="whatsapp" /></a>
+          </li>
+          <li>
+            <a class="social" href={site.instagram} target="_blank" rel="noopener" aria-label="Instagram de GAUZA"><Icon name="instagram" /></a>
+          </li>
+          <li>
+            <a class="social" href={`mailto:${site.email}`} aria-label="Correo de GAUZA"><Icon name="mail" /></a>
+          </li>
+        </ul>
+      </div>
+
+      <nav aria-label="Secciones">
+        <p class="foot-title">Sitio</p>
+        <ul class="grid gap-2.5 text-sm">
+          {nav.map((n) => <li><a class="foot-link" href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div>
+        <p class="foot-title">Servicios</p>
+        <ul class="grid gap-2.5 text-sm">
+          {services.map((s) => <li><a class="foot-link" href="/#servicios">{s.title}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <p class="foot-title">Contacto</p>
+        <ul class="grid gap-2.5 text-sm">
+          <li><a class="foot-link" href={wa()} target="_blank" rel="noopener">WhatsApp {site.whatsappLabel}</a></li>
+          <li><a class="foot-link" href={`tel:${site.phone}`}>Oficina {site.phoneLabel}</a></li>
+          <li><a class="foot-link break-all" href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><a class="foot-link" href={site.mapsUrl} target="_blank" rel="noopener">{site.address.street}, {site.address.city}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-between gap-4 pt-8 text-xs sm:flex-row sm:items-center">
+      <p>© {year} {site.legalName}</p>
+      <p>
+        Sitio web por <a class="font-semibold text-white transition-colors hover:text-wine-100" href={site.credit.url} target="_blank" rel="noopener">{site.credit.name}</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Botón flotante de WhatsApp: siempre a un toque -->
+<a
+  href={wa("Hola GAUZA, quiero cotizar un proyecto.")}
+  target="_blank"
+  rel="noopener"
+  class="wa-float fixed right-5 bottom-5 z-40 grid size-14 place-content-center rounded-full bg-wine-700 text-white shadow-lift sm:right-7 sm:bottom-7"
+  aria-label="Escribir a GAUZA por WhatsApp"
+  data-wa-float
+>
+  <Icon name="whatsapp" class="size-7" strokeWidth={1.6} />
+</a>
+
+<style>
+  .foot-title {
+    margin-bottom: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .foot-link {
+    transition: color 0.2s;
+  }
+  .foot-link:hover {
+    color: #fff;
+  }
+  .social {
+    display: grid;
+    place-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid rgb(255 255 255 / 0.15);
+    border-radius: 999px;
+    color: #fff;
+    transition: background-color 0.3s, border-color 0.3s, transform 0.3s var(--ease-out-soft);
+  }
+  .social:hover {
+    background: var(--color-wine-700);
+    border-color: var(--color-wine-700);
+    transform: translateY(-2px);
+  }
+  .wa-float {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px) scale(0.9);
+    transition:
+      opacity 0.35s var(--ease-out-soft),
+      transform 0.45s var(--ease-out-soft),
+      visibility 0s linear 0.45s,
+      background-color 0.3s;
+  }
+  .wa-float.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity 0.35s var(--ease-out-soft),
+      transform 0.45s var(--ease-out-soft),
+      visibility 0s,
+      background-color 0.3s;
+  }
+  .wa-float:hover {
+    background: var(--color-wine-800);
+  }
+  /* Sin JavaScript, el botón se muestra siempre */
+  :global(html.no-js) .wa-float {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+</style>

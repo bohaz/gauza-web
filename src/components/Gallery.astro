@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import GalleryTile from "./GalleryTile.astro";
+import tresCasas from "../assets/proyectos/tres-casas.webp";
+import verdemar from "../assets/proyectos/valle-verdemar.webp";
+import interior from "../assets/proyectos/interior.webp";
+import placilla from "../assets/proyectos/placilla.webp";
+---
+
+<section class="section !pt-0" aria-labelledby="galeria-titulo">
+  <div class="container-site">
+    <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end" data-reveal>
+      <h2 id="galeria-titulo" class="section-title max-w-xl">Cada proyecto empieza en un buen plano</h2>
+      <p class="max-w-[38ch] text-ink-500">
+        Renders, maquetas 3D y planimetría hechos a la medida de cada mandante y de cada municipio.
+      </p>
+    </div>
+
+    <!-- Celular: 2 columnas. Escritorio: 3 columnas con las dos imágenes altas a los lados. -->
+    <ul class="mt-12 grid auto-rows-[13rem] grid-cols-2 gap-3 sm:auto-rows-[15rem] sm:gap-4 lg:auto-rows-[13.5rem] lg:grid-cols-3">
+      <GalleryTile
+        src={verdemar}
+        title="Valle Verdemar"
+        meta="Diseño personalizado · Limache"
+        alt="Render aéreo de vivienda con piscina y cobertizo en Valle Verdemar, Limache"
+        class="row-span-2"
+      />
+      <GalleryTile
+        src={interior}
+        title="Interiores"
+        meta="Renders de ambientes"
+        alt="Render interior de living con vigas de madera y chimenea colgante"
+        index={1}
+      />
+      <li class="relative overflow-hidden rounded-[1.25rem] lg:col-start-2 lg:row-start-2" data-reveal data-i="2">
+        <Image src={placilla} alt="" widths={[300, 560]} sizes="(min-width: 1024px) 24rem, 50vw" class="absolute inset-0 size-full object-cover" />
+        <div class="relative flex h-full flex-col justify-end bg-wine-700/90 p-4 text-white sm:p-6">
+          <p class="font-display text-4xl leading-none font-bold sm:text-5xl">140</p>
+          <p class="mt-2 max-w-[24ch] text-sm text-white/85">publicaciones con obras y proyectos en nuestro Instagram</p>
+        </div>
+      </li>
+      <GalleryTile
+        src={tresCasas}
+        title="Conjunto de 3 casas"
+        meta="Anteproyecto · Villa Alemana"
+        alt="Render de conjunto de tres casas en Villa Alemana"
+        class="col-span-2 lg:col-span-1 lg:col-start-3 lg:row-span-2 lg:row-start-1"
+        index={3}
+      />
+    </ul>
+  </div>
+</section>

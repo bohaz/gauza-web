@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+/* =========================================================
+   Tokens de diseño — única fuente de colores, tipografía,
+   espaciado y movimiento. Ningún componente define colores sueltos.
+   Burdeos tomado del logo de GAUZA (#7A1C24).
+   ========================================================= */
+@theme {
+  --color-wine-50: #f8eff0;
+  --color-wine-100: #efd9db;
+  --color-wine-600: #8e2430;
+  --color-wine-700: #7a1c24;
+  --color-wine-800: #5f141b;
+  --color-wine-900: #3f0d12;
+
+  --color-ink-950: #121214;
+  --color-ink-900: #1b1b1f;
+  --color-ink-700: #3b3b42;
+  --color-ink-500: #67676f;
+  --color-ink-300: #a9a8ae;
+
+  --color-paper: #faf8f5;
+  --color-sand: #f2eee8;
+  --color-line: #e6e1da;
+
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --radius-card: 1.25rem;
+  --shadow-soft: 0 1px 2px rgb(18 18 20 / 0.04), 0 12px 32px -12px rgb(18 18 20 / 0.18);
+  --shadow-lift: 0 2px 4px rgb(18 18 20 / 0.05), 0 24px 48px -16px rgb(18 18 20 / 0.28);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-rise: rise 0.8s var(--ease-out-soft) both;
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem; /* el encabezado fijo no tapa los títulos al saltar a un ancla */
+    scrollbar-gutter: stable; /* reservar la barra evita saltos laterales */
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-paper font-sans text-ink-900 antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 {
+    @apply font-display font-bold uppercase text-ink-950;
+    letter-spacing: 0.005em;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { @apply bg-wine-700 text-white; }
+  :focus-visible {
+    @apply rounded-sm outline-2 outline-offset-4 outline-wine-700;
+  }
+  img { @apply select-none; }
+}
+
+/* ---------- Componentes reutilizables ---------- */
+@layer components {
+  .container-site { @apply mx-auto w-full max-w-[76rem] px-5 sm:px-8; }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-wine-700 uppercase;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply size-0 border-x-[5px] border-b-[8px] border-x-transparent border-b-wine-700;
+  }
+
+  .section { @apply py-20 sm:py-28; }
+  .section-title { @apply text-4xl leading-[0.95] sm:text-5xl lg:text-6xl; }
+  .section-lead { @apply mt-4 max-w-[60ch] text-base leading-relaxed text-ink-500 sm:text-lg; }
+
+  .btn {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold whitespace-nowrap;
+    transition: background-color 0.25s var(--ease-out-soft), color 0.25s var(--ease-out-soft),
+      transform 0.25s var(--ease-out-soft), box-shadow 0.25s var(--ease-out-soft);
+  }
+  .btn:active { transform: translateY(1px) scale(0.99); }
+  .btn-primary { @apply bg-wine-700 text-white shadow-[0_10px_24px_-10px_rgb(122_28_36/0.7)]; }
+  .btn-primary:hover { @apply bg-wine-800; transform: translateY(-2px); }
+  .btn-ghost { @apply border border-ink-900/15 bg-white/60 text-ink-900 backdrop-blur; }
+  .btn-ghost:hover { @apply border-ink-900/40 bg-white; }
+  .btn-light { @apply bg-white text-wine-800; }
+  .btn-light:hover { @apply bg-wine-50; transform: translateY(-2px); }
+  .btn .arrow { transition: transform 0.25s var(--ease-out-soft); }
+  .btn:hover .arrow { transform: translateX(3px); }
+
+  .card {
+    @apply rounded-[var(--radius-card)] border border-line bg-white shadow-soft;
+  }
+
+  .field {
+    @apply h-12 w-full appearance-none rounded-xl border border-line bg-paper pr-10 pl-4 text-sm text-ink-900;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%237a1c24' stroke-width='1.8'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+  }
+  .field:hover { @apply border-ink-300; }
+  .field:focus { @apply border-wine-700 bg-white outline-none; box-shadow: 0 0 0 4px rgb(122 28 36 / 0.12); }
+}
+
+/* ---------- Aparición suave al hacer scroll ----------
+   Solo se activa si hay JavaScript (clase .js en <html>), así el contenido
+   nunca queda oculto si el script no carga. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.7s var(--ease-out-soft), transform 0.7s var(--ease-out-soft);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+/* Escalonado de elementos en grilla (data-i), sin estilos en línea por la CSP */
+[data-i="1"] { --i: 1; }
+[data-i="2"] { --i: 2; }
+[data-i="3"] { --i: 3; }
+[data-i="4"] { --i: 4; }
+[data-i="5"] { --i: 5; }
+
+/* Entrada de la portada */
+.hero-in > * { animation: var(--animate-rise); }
+.hero-in > :nth-child(2) { animation-delay: 0.08s; }
+.hero-in > :nth-child(3) { animation-delay: 0.16s; }
+.hero-in > :nth-child(4) { animation-delay: 0.24s; }
+.hero-in > :nth-child(5) { animation-delay: 0.32s; }
+
+/* ---------- Reducir movimiento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .js [data-reveal] { opacity: 1; transform: none; }
+}

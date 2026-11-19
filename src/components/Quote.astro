@@ -1,0 +1,54 @@
+---
+/**
+ * Cotizador rápido: adapta el buscador de precios de la referencia.
+ * Arma un mensaje con lo elegido y abre WhatsApp. Sin JavaScript, el botón
+ * abre el chat igual con un mensaje general (href del enlace de respaldo).
+ */
+import Icon from "./Icon.astro";
+import { communes, needs, site, wa } from "../data/site";
+---
+
+<form
+  id="cotizar"
+  class="quote card relative grid gap-4 p-5 sm:p-7 md:grid-cols-3 md:items-end lg:grid-cols-[1.1fr_1fr_0.8fr_auto] lg:gap-5"
+  data-quote
+  data-phone={site.whatsapp}
+  action={wa()}
+  method="get"
+  target="_blank"
+>
+  <input type="hidden" name="text" value="Hola GAUZA, quiero cotizar un proyecto. ¿Me pueden orientar?" />
+  <h2 class="font-sans text-lg font-semibold tracking-normal normal-case md:col-span-3 lg:col-span-4">
+    ¿Qué necesitas? <span class="font-normal text-ink-500">Te respondemos por WhatsApp.</span>
+  </h2>
+
+  <label class="grid gap-2 text-xs font-semibold tracking-wide text-ink-500 uppercase">
+    Trámite
+    <select class="field normal-case" name="need">
+      <option value="">Elige una opción</option>
+      {needs.map((n) => <option value={n}>{n}</option>)}
+    </select>
+  </label>
+
+  <label class="grid gap-2 text-xs font-semibold tracking-wide text-ink-500 uppercase">
+    Comuna
+    <select class="field normal-case" name="commune">
+      <option value="">Elige tu comuna</option>
+      {communes.map((c) => <option value={c}>{c}</option>)}
+      <option value="otra comuna de la región">Otra comuna</option>
+    </select>
+  </label>
+
+  <label class="grid gap-2 text-xs font-semibold tracking-wide text-ink-500 uppercase">
+    Propiedad
+    <select class="field normal-case" name="property">
+      <option value="">Urbana o rural</option>
+      <option value="Urbana">Urbana</option>
+      <option value="Rural">Rural o parcela</option>
+    </select>
+  </label>
+
+  <button type="submit" class="btn btn-primary h-12 md:col-span-3 lg:col-span-1 lg:px-7">
+    <Icon name="whatsapp" class="size-5" /> Cotizar por WhatsApp
+  </button>
+</form>

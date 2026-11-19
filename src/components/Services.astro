@@ -1,0 +1,68 @@
+---
+import Icon from "./Icon.astro";
+import { services } from "../data/content";
+import { wa } from "../data/site";
+---
+
+<section id="servicios" class="section">
+  <div class="container-site">
+    <div class="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
+      <div data-reveal>
+        <p class="eyebrow">Servicios</p>
+        <h2 class="section-title mt-4">Todo lo que tu proyecto necesita, en una sola oficina</h2>
+      </div>
+      <p class="section-lead lg:justify-self-end" data-reveal>
+        Arquitectura, normativa y tramitación municipal trabajando juntas. Así cada plano se diseña pensando en lo
+        que la Dirección de Obras va a revisar.
+      </p>
+    </div>
+
+    <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        services.map((s, i) => (
+          <li class="flex" data-reveal data-i={i}>
+            <div class="service card group flex w-full flex-col p-7">
+            <span class="grid size-14 place-content-center rounded-2xl bg-wine-50 text-wine-700 transition-colors duration-300 group-hover:bg-wine-700 group-hover:text-white">
+              <Icon name={s.icon} class="size-7" strokeWidth={1.5} />
+            </span>
+            <h3 class="mt-6 text-2xl leading-none">{s.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-ink-500">{s.text}</p>
+            <ul class="mt-5 grid gap-2 text-sm text-ink-700">
+              {s.items.map((item) => (
+                <li class="flex items-start gap-2">
+                  <Icon name="check" class="mt-0.5 size-4 shrink-0 text-wine-700" strokeWidth={2.2} />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a
+              href={wa(s.message)}
+              target="_blank"
+              rel="noopener"
+              class="mt-auto inline-flex items-center gap-2 pt-7 text-sm font-semibold text-wine-700"
+              aria-label={`Consultar por ${s.title} en WhatsApp`}
+            >
+              Consultar
+              <Icon name="arrow" class="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .service {
+    transition:
+      transform 0.4s var(--ease-out-soft),
+      box-shadow 0.4s var(--ease-out-soft),
+      border-color 0.4s;
+  }
+  .service:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-wine-100);
+  }
+</style>
